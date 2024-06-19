@@ -14,7 +14,7 @@ public class PollResults {
     private static int counter = 0;
 
     public PollResults() throws InterruptedException, ExecutionException {
-        try (ExecutorService service = Executors.newSingleThreadExecutor()) {
+        try (ExecutorService service = Executors.newScheduledThreadPool(10)) {
             log.info("ExecutorService PollResults started");
             Future<?> result = service.submit(() -> {
                 log.info("counter start");
@@ -25,11 +25,11 @@ public class PollResults {
                 log.info("counter finish");
             });
 
-            result.get(10, TimeUnit.SECONDS);
+            result.get(10, TimeUnit.MILLISECONDS);
             log.info("ExecutorService PollResults finished in time");
 
         } catch (TimeoutException e) {
-            log.info("not reached in time {}", e.getMessage());
+            log.info("not reached in time {}", e.toString());
         }
     }
 }

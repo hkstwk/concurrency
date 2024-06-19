@@ -2,6 +2,8 @@ package nl.hkstwk.concurrency;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.hkstwk.concurrency.execurtorservice.AddData;
+import nl.hkstwk.concurrency.execurtorservice.ScheduledTask;
+import nl.hkstwk.concurrency.execurtorservice.SheepManager;
 import nl.hkstwk.concurrency.runnable.PollResults;
 import nl.hkstwk.concurrency.runnable.PrintData;
 import nl.hkstwk.concurrency.runnable.ReadInventoryThread;
@@ -16,11 +18,13 @@ public class StartUpRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        doRunnable();
-        doPolling();
-        doPrintDataExecutorService();
-        doPollResultsExecutorService();
-        doAddDataExecutorService();
+//        doRunnable();
+//        doPolling();
+//        doPrintDataExecutorService();
+//        doPollResultsExecutorService();
+//        doAddDataExecutorService();
+//        doScheduledTasks();
+        new SheepManager();
     }
 
     private static void doPolling() throws InterruptedException {
@@ -47,5 +51,9 @@ public class StartUpRunner implements CommandLineRunner {
 
     private void doAddDataExecutorService() {
         new AddData();
+    }
+
+    private void doScheduledTasks() throws ExecutionException, InterruptedException {
+        new ScheduledTask();
     }
 }
