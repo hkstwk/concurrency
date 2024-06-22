@@ -1,9 +1,10 @@
 package nl.hkstwk.concurrency;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.hkstwk.concurrency.execurtorservice.AddData;
+import nl.hkstwk.concurrency.execurtorservice.HashMapClient;
 import nl.hkstwk.concurrency.execurtorservice.ScheduledTask;
-import nl.hkstwk.concurrency.execurtorservice.SheepManager;
 import nl.hkstwk.concurrency.runnable.PollResults;
 import nl.hkstwk.concurrency.runnable.PrintData;
 import nl.hkstwk.concurrency.runnable.ReadInventoryThread;
@@ -14,7 +15,10 @@ import java.util.concurrent.ExecutionException;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class StartUpRunner implements CommandLineRunner {
+
+    private final ConcurrentHashMapManager manager;
 
     @Override
     public void run(String... args) throws Exception {
@@ -24,7 +28,8 @@ public class StartUpRunner implements CommandLineRunner {
 //        doPollResultsExecutorService();
 //        doAddDataExecutorService();
 //        doScheduledTasks();
-        new SheepManager();
+//        new SheepManager();
+        new HashMapClient(manager);
     }
 
     private static void doPolling() throws InterruptedException {
