@@ -31,7 +31,7 @@ public class ConcurrentHashMapManager {
     private final Lock lock = new ReentrantLock();
 
     public void addOrUpdateUUID(UUID uuid) {
-        lock.lock();
+//        lock.lock();
         try {
             map.compute(uuid, (key, existingValue) -> {
                 if (existingValue == null) {
@@ -46,7 +46,7 @@ public class ConcurrentHashMapManager {
                 }
             });
         } finally {
-            lock.unlock();
+//            lock.unlock();
         }
     }
 
