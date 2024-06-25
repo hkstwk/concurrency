@@ -16,7 +16,7 @@ public class HashMapClient {
 
         try (ExecutorService service = Executors.newFixedThreadPool(5)) {
             UUID uuid = UUID.randomUUID();
-            for (int i = 0; i < 250; i++) {
+            for (int i = 0; i < 15; i++) {
                 service.execute(() -> {
                     this.manager.addOrUpdateUUID(uuid);
                 });

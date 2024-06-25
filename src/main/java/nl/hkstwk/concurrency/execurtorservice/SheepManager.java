@@ -14,13 +14,19 @@ public class SheepManager {
         }
     }
 
+    private synchronized void incrementAndReportSheepCountSyncModifier() {
+        System.out.print(sheepCount.getAndIncrement() + " ");
+    }
+
     public SheepManager() throws InterruptedException {
         ExecutorService service = null;
         try {
             service = Executors.newFixedThreadPool(20);
 
             for (int i = 0; i < 50; i++) {
-                service.submit(() -> incrementAndReportSheepCount());
+//                service.submit(() -> incrementAndReportSheepCount());
+                service.submit(() -> incrementAndReportSheepCountSyncModifier());
+
             }
         } finally {
             if (service != null) service.shutdown();

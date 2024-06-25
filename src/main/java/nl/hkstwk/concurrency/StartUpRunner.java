@@ -5,9 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import nl.hkstwk.concurrency.execurtorservice.AddData;
 import nl.hkstwk.concurrency.execurtorservice.HashMapClient;
 import nl.hkstwk.concurrency.execurtorservice.ScheduledTask;
+import nl.hkstwk.concurrency.execurtorservice.SheepManager;
 import nl.hkstwk.concurrency.runnable.PollResults;
 import nl.hkstwk.concurrency.runnable.PrintData;
 import nl.hkstwk.concurrency.runnable.ReadInventoryThread;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -20,16 +22,41 @@ public class StartUpRunner implements CommandLineRunner {
 
     private final ConcurrentHashMapManager manager;
 
+    @Value("${concurrency.execute.runnable}")
+    private boolean executeDoRunnable;
+
+    @Value("${concurrency.execute.do-scheduled-tasks}")
+    private boolean executeDoScheduledTasks;
+
+    @Value("${concurrency.execute.do-polling}")
+    private boolean executeDoPolling;
+
+    @Value("${concurrency.execute.do-printdata-executor-service}")
+    private boolean executeDoPrintDataES;
+
+    @Value("${concurrency.execute.do-pollresults-executor-service}")
+    private boolean executeDoPollResultsES;
+
+    @Value("${concurrency.execute.do-adddata-executor-service}")
+    private boolean executeDoAddDataES;
+
+    @Value("${concurrency.execute.do-sheep-manager}")
+    private boolean executeDoSheepManager;
+
+    @Value("${concurrency.execute.do-hashmap-client}")
+    private boolean executeDoHashmapClient;
+
     @Override
     public void run(String... args) throws Exception {
-//        doRunnable();
-//        doPolling();
-//        doPrintDataExecutorService();
-//        doPollResultsExecutorService();
-//        doAddDataExecutorService();
-//        doScheduledTasks();
-//        new SheepManager();
-        new HashMapClient(manager);
+        log.info("cores: {}", Runtime.getRuntime().availableProcessors());
+        if (executeDoRunnable) doRunnable();
+        if (executeDoScheduledTasks) doScheduledTasks();
+        if (executeDoPolling) doPolling();
+        if (executeDoPrintDataES) doPrintDataExecutorService();
+        if (executeDoPollResultsES) doPollResultsExecutorService();
+        if (executeDoAddDataES) doAddDataExecutorService();
+        if (executeDoSheepManager) new SheepManager();
+        if (executeDoHashmapClient) new HashMapClient(manager);
     }
 
     private static void doPolling() throws InterruptedException {
@@ -46,7 +73,7 @@ public class StartUpRunner implements CommandLineRunner {
         log.info("...end");
     }
 
-    private static void doPrintDataExecutorService(){
+    private static void doPrintDataExecutorService() {
         new nl.hkstwk.concurrency.execurtorservice.PrintData();
     }
 
